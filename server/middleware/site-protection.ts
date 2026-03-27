@@ -13,22 +13,9 @@ export default defineEventHandler(async (event) => {
     path === '/access'
   ) return
 
-  // Check env var first (fast path — no DB needed)
-  const envEnabled = process.env.SITE_PROTECTION_ENABLED
-  let enabled: boolean
-
-  if (envEnabled !== undefined) {
-    enabled = envEnabled === 'true' || envEnabled === '1'
-  } else {
-    // Fall back to DB (local dev only)
-    try {
-      const db = useDatabase()
-      const row = await db.sql`SELECT value FROM site_settings WHERE key = 'protection_enabled' LIMIT 1`
-      enabled = row.rows?.[0]?.value === '1'
-    } catch {
-      enabled = false
-    }
-  }
+  // Protection is ON by default — set SITE_PROTECTION_ENABLED=false to open the site
+  const envOverride = process.env.SITE_PROTECTION_ENABLED
+  const enabled = envOverride !== 'false' && envOverride !== '0'
 
   if (!enabled) return
 
@@ -36,11 +23,11 @@ export default defineEventHandler(async (event) => {
   const cookie = getCookie(event, 'bellaterra_visitor')
   if (cookie === 'granted') return
 
-  // Block API calls cleanly
+  // Block API calls
   if (path.startsWith('/api/')) {
     throw createError({ statusCode: 401, statusMessage: 'Site is password protected.' })
   }
 
-  // Redirect to access gate, preserving the original URL
+  // Redirect all other routes to the access gate
   await sendRedirect(event, `/access?redirect=${encodeURIComponent(path)}`, 302)
 })
