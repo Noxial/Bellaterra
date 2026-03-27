@@ -1,7 +1,3 @@
-// Cache to avoid a DB round-trip on every request
-let _cache: { enabled: boolean; ts: number } | null = null
-const CACHE_TTL = 30_000 // 30 seconds
-
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname
 
@@ -17,21 +13,24 @@ export default defineEventHandler(async (event) => {
     path === '/access'
   ) return
 
-  // Refresh cache if stale
-  const now = Date.now()
-  if (!_cache || now - _cache.ts > CACHE_TTL) {
+  // Check env var first (fast path — no DB needed)
+  const envEnabled = process.env.SITE_PROTECTION_ENABLED
+  let enabled: boolean
+
+  if (envEnabled !== undefined) {
+    enabled = envEnabled === 'true' || envEnabled === '1'
+  } else {
+    // Fall back to DB (local dev only)
     try {
       const db = useDatabase()
       const row = await db.sql`SELECT value FROM site_settings WHERE key = 'protection_enabled' LIMIT 1`
-      const enabled = row.rows?.[0]?.value === '1'
-      _cache = { enabled, ts: now }
+      enabled = row.rows?.[0]?.value === '1'
     } catch {
-      // DB not ready yet (e.g. cold start) — allow through
-      return
+      enabled = false
     }
   }
 
-  if (!_cache.enabled) return
+  if (!enabled) return
 
   // Check visitor access cookie
   const cookie = getCookie(event, 'bellaterra_visitor')
@@ -42,7 +41,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Site is password protected.' })
   }
 
-  // Redirect to the access gate, preserving the original URL
-  const redirectTo = `/access?redirect=${encodeURIComponent(path)}`
-  await sendRedirect(event, redirectTo, 302)
+  // Redirect to access gate, preserving the original URL
+  await sendRedirect(event, `/access?redirect=${encodeURIComponent(path)}`, 302)
 })

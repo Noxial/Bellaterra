@@ -5,9 +5,20 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Password is required.' })
   }
 
-  const db = useDatabase()
-  const row = await db.sql`SELECT value FROM site_settings WHERE key = 'site_password' LIMIT 1`
-  const correctPassword = row.rows?.[0]?.value ?? process.env.SITE_PASSWORD ?? '%bellaterra%26'
+  // Check env var first (works on Vercel without DB)
+  let correctPassword = process.env.SITE_PASSWORD
+
+  if (!correctPassword) {
+    try {
+      const db = useDatabase()
+      const row = await db.sql`SELECT value FROM site_settings WHERE key = 'site_password' LIMIT 1`
+      correctPassword = row.rows?.[0]?.value as string | undefined
+    } catch {
+      // DB unavailable — fall through to default
+    }
+  }
+
+  correctPassword ??= '%bellaterra%26'
 
   if (password !== correctPassword) {
     throw createError({ statusCode: 401, message: 'Incorrect access code.' })
