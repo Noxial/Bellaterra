@@ -14,9 +14,9 @@ const { data: inquiries } = await useFetch<any[]>('/api/admin/inquiries')
 const stats = computed(() => {
   const all = inquiries.value ?? []
   return [
-    { label: 'Total Inquiries', value: all.length, color: 'bg-deep-green text-cream' },
+    { label: 'Total Inquiries', value: all.length, color: 'bg-chocolate text-cream' },
     { label: 'Pending', value: all.filter((i) => i.status === 'pending' || i.status === 'new').length, color: 'bg-terracotta text-cream' },
-    { label: 'In Progress', value: all.filter((i) => i.status === 'in_progress').length, color: 'bg-golden-brass text-charcoal' },
+    { label: 'In Progress', value: all.filter((i) => i.status === 'in_progress').length, color: 'bg-amber text-charcoal' },
     { label: 'Completed', value: all.filter((i) => i.status === 'completed').length, color: 'bg-olive text-cream' },
   ]
 })
@@ -91,7 +91,7 @@ const recentInquiries = computed(() => (inquiries.value ?? []).slice(0, 6))
             class="px-6 py-4 flex items-center justify-between gap-6 hover:bg-charcoal/[0.02] transition-colors duration-200"
           >
             <div class="flex items-center gap-4 min-w-0">
-              <div class="w-8 h-8 bg-deep-green/10 flex items-center justify-center text-xs font-semibold text-deep-green shrink-0">
+              <div class="w-8 h-8 bg-chocolate/10 flex items-center justify-center text-xs font-semibold text-chocolate shrink-0">
                 {{ (inquiry.full_name?.[0] ?? inquiry.first_name?.[0] ?? '?').toUpperCase() }}
               </div>
               <div class="min-w-0">
@@ -109,7 +109,7 @@ const recentInquiries = computed(() => (inquiries.value ?? []).slice(0, 6))
                 class="inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase"
                 :class="{
                   'bg-terracotta/15 text-terracotta': inquiry.status === 'new' || inquiry.status === 'pending',
-                  'bg-golden-brass/15 text-golden-brass': inquiry.status === 'in_progress',
+                  'bg-amber/15 text-amber': inquiry.status === 'in_progress',
                   'bg-olive/15 text-olive': inquiry.status === 'completed',
                   'bg-charcoal/10 text-charcoal/50': !['new','pending','in_progress','completed'].includes(inquiry.status),
                 }"

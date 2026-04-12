@@ -341,7 +341,7 @@ async function deleteImage(imageId: number) {
                 />
                 <button
                   :disabled="!newImageUrl.trim() || addingImage"
-                  class="px-6 py-3 bg-deep-green text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-200 disabled:opacity-40"
+                  class="px-6 py-3 bg-chocolate text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-200 disabled:opacity-40"
                   @click="addImage"
                 >
                   Add

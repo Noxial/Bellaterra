@@ -84,7 +84,7 @@ async function saveNotes() {
 const statusColors: Record<string, string> = {
   new: 'bg-terracotta/15 text-terracotta',
   pending: 'bg-terracotta/15 text-terracotta',
-  in_progress: 'bg-golden-brass/15 text-golden-brass',
+  in_progress: 'bg-amber/15 text-amber',
   completed: 'bg-olive/15 text-olive',
   archived: 'bg-charcoal/10 text-charcoal/40',
 }
@@ -292,7 +292,7 @@ const statusUpdateOptions = ['pending', 'in_progress', 'completed', 'archived']
             <div class="border-t border-charcoal/8 pt-5">
               <a
                 :href="`mailto:${selectedInquiry.email}`"
-                class="block w-full text-center py-3 bg-deep-green text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-300"
+                class="block w-full text-center py-3 bg-chocolate text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-300"
               >
                 Reply by Email
               </a>

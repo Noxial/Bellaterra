@@ -34,7 +34,7 @@ const newBlock = ref<Partial<AvailabilityBlock>>({
 
 const typeColors: Record<string, string> = {
   booked: 'bg-terracotta/15 text-terracotta',
-  blocked: 'bg-golden-brass/15 text-golden-brass',
+  blocked: 'bg-amber/15 text-amber',
   maintenance: 'bg-charcoal/10 text-charcoal/60',
 }
 

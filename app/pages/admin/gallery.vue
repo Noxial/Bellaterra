@@ -32,9 +32,9 @@ const categoryOptions = [
 ]
 
 const categoryColors: Record<string, string> = {
-  interior: 'bg-deep-green/15 text-deep-green',
+  interior: 'bg-chocolate/15 text-chocolate',
   exterior: 'bg-olive/15 text-olive',
-  nature: 'bg-golden-brass/15 text-golden-brass',
+  nature: 'bg-amber/15 text-amber',
   details: 'bg-terracotta/15 text-terracotta',
 }
 
@@ -124,7 +124,7 @@ async function deleteImage(id: number) {
           <div>
             <button
               :disabled="!newImage.url.trim() || adding"
-              class="w-full px-6 py-3 bg-deep-green text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-200 disabled:opacity-40"
+              class="w-full px-6 py-3 bg-chocolate text-cream text-xs font-semibold tracking-widest uppercase hover:opacity-85 transition-opacity duration-200 disabled:opacity-40"
               @click="addImage"
             >
               {{ adding ? 'Adding…' : 'Add' }}

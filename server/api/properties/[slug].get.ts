@@ -1,10 +1,7 @@
-import { initSchema } from '../../database/db'
-
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, 'slug')
   if (!slug) throw createError({ statusCode: 400, statusMessage: 'Slug is required.' })
 
-  await initSchema()
   const db = useDatabase()
 
   const propResult = await db.sql`

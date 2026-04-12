@@ -13,6 +13,10 @@ export default defineEventHandler(async (event) => {
     path === '/access'
   ) return
 
+  // Authenticated admins can access everything without the visitor cookie
+  const adminCookie = getCookie(event, 'bellaterra_admin')
+  if (adminCookie === 'authenticated') return
+
   // Protection is ON by default — set SITE_PROTECTION_ENABLED=false to open the site
   const envOverride = process.env.SITE_PROTECTION_ENABLED
   const enabled = envOverride !== 'false' && envOverride !== '0'

@@ -26,7 +26,7 @@ function isActive(item: { to: string; exact?: boolean }) {
 <template>
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-60 shrink-0 bg-deep-green flex flex-col fixed top-0 left-0 h-full z-40">
+    <aside class="w-60 shrink-0 bg-chocolate flex flex-col fixed top-0 left-0 h-full z-40">
       <!-- Logo -->
       <div class="px-6 py-6 border-b border-cream/10">
         <NuxtLink to="/admin" class="flex items-center gap-3">

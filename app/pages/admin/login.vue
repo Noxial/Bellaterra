@@ -22,7 +22,7 @@ async function login() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-deep-green flex items-center justify-center px-4">
+  <div class="min-h-screen bg-chocolate flex items-center justify-center px-4">
     <div class="w-full max-w-sm bg-white px-10 py-12">
       <!-- Glyph -->
       <div class="flex flex-col items-center mb-10">
